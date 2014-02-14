@@ -1,0 +1,47 @@
+{
+  "rightscale": { "instance_uuid": "uuid-default" },
+  "ephemeral_lvm": {
+    "filesystem": "ext4",
+    "mount_point": "/mnt/ephemeral",
+    "logical_volume_name": "ephemeral0",
+    "logical_volume_size": "100%VG",
+    "stripe_size": 512,
+    "volume_group_name": "vg-data"
+  },
+  "rs-base": {
+    "collectd_server": "localhost",
+    "ntp": {
+      "servers": ["time.rightscale.com","ec2-us-east.time.rightscale.com","ec2-us-west.time.rightscale.com"]
+    },
+    "swap": {
+      "size": 1
+    }
+  },
+  "resolver": {
+    "nameservers": ["8.8.8.8","8.8.4.4","4.2.2.3","4.2.2.6"],
+    "search": "foo.bar.baz"
+  },
+  "nginx": {
+    "install_method": "package"
+  },
+  "rundeck": {
+    "admin": {
+      "username": "admin",
+      "password": "password",
+      "ssh_key": "TODO: Put a key here"
+    }
+  },
+  "run_list": [
+    "recipe[resolver]",
+    "recipe[rightscaleshim]",
+    "recipe[ephemeral_lvm::default]",
+    "recipe[rs-machine_tag::default]",
+    "recipe[rs-base::swap]",
+    "recipe[rs-base::ntp]",
+    "recipe[rs-base::rsyslog]",
+    "recipe[rs-base::collectd]",
+    "recipe[nginx]",
+    "recipe[rundeck::default]",
+    "recipe[rundeck::proxy]"
+  ]
+}
